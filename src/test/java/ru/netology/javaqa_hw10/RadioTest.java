@@ -2,158 +2,99 @@ package ru.netology.javaqa_hw10;
 
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import ru.netology.javaqa_hw10.Radio;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
 
 public class RadioTest {
 
 
     // Изменение громкости
 
-    @Test
-    public void shouldSetVolumeCurrentMoreMax() {
+    @ParameterizedTest
+    @CsvSource({
+            "0,11", //Громкость выше максимальной
+            "0,-1"   //Громкость ниже минимальной
+    })
+    public void shouldSetVolume(int expected, int CurrentVolume) {
         Radio radio = new Radio();
-
-        radio.setCurrentVolume(11);
-
-        int expected = 0;
-        int actual = radio.getCurrentVolume();
-
-        Assertions.assertEquals(expected, actual);
-    }
-    @Test
-    public void shouldSetVolumeCurrentLessMin() {
-        Radio radio = new Radio();
-
-        radio.setCurrentVolume(-1);
-
-        int expected = 0;
-        int actual = radio.getCurrentVolume();
-
-        Assertions.assertEquals(expected, actual);
+        radio.setCurrentVolume(CurrentVolume);
+        Assertions.assertEquals(expected, radio.getCurrentVolume());
     }
 
 
-    @Test
-    public void shooldIncreaseVolumeUpperBound() {
+    @ParameterizedTest
+    @CsvSource({
+            "10,9", //Верхняя граница
+            "1,0",  //Нижняя граница
+            "10,10" //Максимальное значение текущей громкост
+
+    })
+    public void shooldIncreaseVolume(int expected, int CurrentVolume) {
         Radio radio = new Radio();
-        radio.setCurrentVolume(9);
+        radio.setCurrentVolume(CurrentVolume);
         radio.increaseVolume();
-        Assertions.assertEquals(10, radio.getCurrentVolume());
+        Assertions.assertEquals(expected, radio.getCurrentVolume());
 
     }
-    @Test
-    public void shooldIncreaseVolumeLowerBound() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(0);
-        radio.increaseVolume();
-        Assertions.assertEquals(1, radio.getCurrentVolume());
 
-    }
-    @Test
-    public void shooldIncreaseVolumeCurrentMax() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(10);
-        radio.increaseVolume();
-        Assertions.assertEquals(0, radio.getCurrentVolume());
+    @ParameterizedTest
+    @CsvSource({
+            "9,10", //Верхняя граница
+            "0,1",  //Нижняя граница
+            "0,0" //Минимальное значение текущей громкости
 
-    }
-    @Test
-    public void shooldReductionVolumeUpperBound() {
+    })
+    public void shooldReductionVolume(int expected, int CurrentVolume) {
         Radio radio = new Radio();
-        radio.setCurrentVolume(10);
+        radio.setCurrentVolume(CurrentVolume);
         radio.reductionVolume();
-        Assertions.assertEquals(9, radio.getCurrentVolume());
-
-    }
-    @Test
-    public void shooldReductionVolumeLowerBound() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(1);
-        radio.reductionVolume();
-        Assertions.assertEquals(0, radio.getCurrentVolume());
-
-    }
-
-    @Test
-    public void shooldReductionVolumeCurrentMin() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(0);
-        radio.reductionVolume();
-        Assertions.assertEquals(10, radio.getCurrentVolume());
+        Assertions.assertEquals(expected, radio.getCurrentVolume());
 
     }
 
 
     // переключение станций
 
-    @Test
-    public void shouldSetStationCurrentMoreMax() {
+    @ParameterizedTest
+    @CsvSource({
+            "0,11", //Выше максимальной
+            "0,-1",  //Ниже минимальной
+
+    })
+    public void shouldSetStation(int expected, int CurrentStation) {
         Radio radio = new Radio();
-
-        radio.setCurrentStation(10);
-
-        int expected = 0;
-        int actual = radio.getCurrentStation();
-
-        Assertions.assertEquals(expected, actual);
-    }
-    @Test
-    public void shouldSetStationCurrentLessMin() {
-        Radio radio = new Radio();
-
-        radio.setCurrentStation(-1);
-
-        int expected = 0;
-        int actual = radio.getCurrentStation();
-
-        Assertions.assertEquals(expected, actual);
+        radio.setCurrentStation(CurrentStation);
+        Assertions.assertEquals(expected, radio.getCurrentStation());
     }
 
-    @Test
-    public void shooldSetStation() {
+    @ParameterizedTest
+    @CsvSource({
+            "1,0", //Нижняя граница
+            "9,8",  //Верхняя граница
+            "0,9",  //Последняя станция
+
+    })
+    public void shooldNextStation(int expected, int CurrentStation) {
         Radio radio = new Radio();
-        radio.setCurrentStation(5);
-        int expected = 5;
-        int actual = radio.getCurrentStation();
-        Assertions.assertEquals(expected, actual);
-
-    }
-
-    @Test
-    public void shooldNextStation() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(8);
-
+        radio.setCurrentStation(CurrentStation);
         radio.nextStation();
-        Assertions.assertEquals(9, radio.getCurrentStation());
-
+        Assertions.assertEquals(expected, radio.getCurrentStation());
     }
 
-    @Test
-    public void shooldPrevStation() {
+    @ParameterizedTest
+    @CsvSource({
+            "0,1", //Нижняя граница
+            "8,9",  //Верхняя граница
+            "9,0"  //Последняя станция
+
+    })
+    public void shooldPrevStation(int expected, int CurrentStation) {
         Radio radio = new Radio();
-        radio.setCurrentStation(1);
+        radio.setCurrentStation(CurrentStation);
         radio.prevStation();
-        Assertions.assertEquals(0, radio.getCurrentStation());
-
+        Assertions.assertEquals(expected, radio.getCurrentStation());
     }
 
-    @Test
-    public void shooldNextStationCurrentMax() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(9);
-        radio.nextStation();
-        Assertions.assertEquals(0, radio.getCurrentStation());
 
-    }
-
-    @Test
-    public void shooldPrevStationCurrentMin() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(0);
-        radio.prevStation();
-        Assertions.assertEquals(9, radio.getCurrentStation());
-
-    }
 }
