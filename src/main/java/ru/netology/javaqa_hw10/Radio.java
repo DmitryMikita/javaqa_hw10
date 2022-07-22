@@ -1,15 +1,17 @@
 package ru.netology.javaqa_hw10;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class Radio {
 
     private int currentStation;
     private int currentVolume;
     private int stationsCount = 10;
-
-
-    public Radio() {
-
-    }
 
     public Radio(int stationsCount) {
         this.stationsCount = stationsCount;
@@ -73,3 +75,7 @@ public class Radio {
         return;
     }
 }
+
+
+
+
