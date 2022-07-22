@@ -96,5 +96,45 @@ public class RadioTest {
         Assertions.assertEquals(expected, radio.getCurrentStation());
     }
 
+    // тест задаваемого количества радиостанций
+    @ParameterizedTest
+    @CsvSource({
+            "0,31", //Выше максимальной
+            "0,-1",  //Ниже минимальной
+
+    })
+    public void shouldSetStationChangeCount(int expected, int CurrentStation) {
+        Radio radio = new Radio(30);
+        radio.setCurrentStation(CurrentStation);
+        Assertions.assertEquals(expected, radio.getCurrentStation());
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "1,0", //Нижняя граница
+            "29,28",  //Верхняя граница
+            "0,29",  //Последняя станция
+
+    })
+    public void shooldNextStationChangeCount(int expected, int CurrentStation) {
+        Radio radio = new Radio(30);
+        radio.setCurrentStation(CurrentStation);
+        radio.nextStation();
+        Assertions.assertEquals(expected, radio.getCurrentStation());
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "0,1", //Нижняя граница
+            "28,29",  //Верхняя граница
+            "29,0"  //Последняя станция
+
+    })
+    public void shooldPrevStationChangeCount(int expected, int CurrentStation) {
+        Radio radio = new Radio(30);
+        radio.setCurrentStation(CurrentStation);
+        radio.prevStation();
+        Assertions.assertEquals(expected, radio.getCurrentStation());
+    }
 
 }
